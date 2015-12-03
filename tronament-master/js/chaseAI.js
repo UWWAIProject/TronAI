@@ -3,32 +3,31 @@
  */
 tronament.aiModule("Chase AI", function() {
     var direction = 1;
-    var enemyPos = null;
+    var enemyPos = "nothing";
 
     this.onReady = function() {
-        this.message("It's go-time!");
-        scan();
+        //this.message("Hello");
     }
 
     this.onDeath = function() {
-        this.message("Curse you, Lightyear!");
+        //this.message("Curse you, Lightyear!");
     }
 
-    find = function(){
-        if (enemeyPos == null)
+    this.find = function(){
+        if (enemeyPos == "nothing")
             scan();
         else{
-            
+            this.message(enemyPos);
         }
     }
 
-    scan = function(){
+    this.scan = function(){
         for(var i=0; i<48; i++){
             for(var j=0; j<48; j++){
+                //this.message("hello" + j);
                 if(this.queryAbsolute(i,j) == tronament.OPPONENT){
                     enemyPos = i + "," + j;
-                    message(enemyPos);
-                    alert(enemyPos);
+                    this.message(enemyPos);
                 }
             }
         }
@@ -39,7 +38,7 @@ tronament.aiModule("Chase AI", function() {
      */
     this.move = function() {
         var move = Math.floor((Math.random() * 50) + 1);
-        find();
+        this.scan();
         if (move == tronament.EAST && this.directionIsSafe(move)) {
             direction = tronament.EAST;
         } else if (move == tronament.SOUTH && this.directionIsSafe(move)) {
@@ -51,7 +50,7 @@ tronament.aiModule("Chase AI", function() {
         }
 
         if (!this.directionIsSafe(direction)) {
-            this.message("Whoa! Not that way!");
+            //this.message("Whoa! Not that way!");
             if (this.directionIsSafe(tronament.EAST)) {
                 direction = tronament.EAST;
             } if (this.directionIsSafe(tronament.SOUTH)) {
