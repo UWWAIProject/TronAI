@@ -28,6 +28,8 @@ tronament.aiModule("Chase AI", function() {
                 if(this.queryAbsolute(i,j) == tronament.OPPONENT){
                     enemyPos = i + "," + j;
                     this.message(enemyPos);
+                    break;
+                	break;
                 }
             }
         }

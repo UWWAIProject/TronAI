@@ -114,7 +114,7 @@ window.tronament = new function() {
 
             // do an additional check for opponent trail
             if (result == tronament.TRAIL && collisionMap[x][y] != playerIndex) {
-                result = result | tronament.OPPONENT;
+                result = tronament.OPPONENT;
             }
 
             return result;
