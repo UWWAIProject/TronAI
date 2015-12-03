@@ -7,13 +7,14 @@ tronament.aiModule("Chase AI", function() {
 
     this.onReady = function() {
         this.message("It's go-time!");
+        scan();
     }
 
     this.onDeath = function() {
         this.message("Curse you, Lightyear!");
     }
 
-    this.find = function(){
+    find = function(){
         if (enemeyPos == null)
             scan();
         else{
@@ -21,16 +22,24 @@ tronament.aiModule("Chase AI", function() {
         }
     }
 
-    this.scan = function(){
-
+    scan = function(){
+        for(var i=0; i<48; i++){
+            for(var j=0; j<48; j++){
+                if(this.queryAbsolute(i,j) == tronament.OPPONENT){
+                    enemyPos = i + "," + j;
+                    message(enemyPos);
+                    alert(enemyPos);
+                }
+            }
+        }
     }
 
     /**
      * Moves based on some randomness and some checks.
      */
-    /*this.move = function() {
+    this.move = function() {
         var move = Math.floor((Math.random() * 50) + 1);
-
+        find();
         if (move == tronament.EAST && this.directionIsSafe(move)) {
             direction = tronament.EAST;
         } else if (move == tronament.SOUTH && this.directionIsSafe(move)) {
@@ -71,5 +80,5 @@ tronament.aiModule("Chase AI", function() {
             return false;
         }
         return true;
-    }*/
+    }
 });
