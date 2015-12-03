@@ -15,7 +15,7 @@ tronament.aiModule("Chase AI", function() {
 
     this.find = function(){
         if (enemyPos == "nothing")
-            scan();
+            this.scan();
         else{
             this.message(enemyPos);
         }
@@ -44,7 +44,7 @@ tronament.aiModule("Chase AI", function() {
      */
     this.move = function() {
         var move = Math.floor((Math.random() * 50) + 1);
-        this.dis();
+        this.find();
         if (move == tronament.EAST && this.directionIsSafe(move)) {
             direction = tronament.EAST;
         } else if (move == tronament.SOUTH && this.directionIsSafe(move)) {
