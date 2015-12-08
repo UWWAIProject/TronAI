@@ -129,7 +129,7 @@ window.tronament = new function() {
          */
         constructor.prototype.queryRelative = function(x, y) {
             var playerIndex = players.indexOf(this);
-            return this.queryAbsolute(playerCoordinates[playerIndex].x + x, playerCoordinates[playerIndex].y + y);
+            return String(this.queryAbsolute(playerCoordinates[playerIndex].x + x, playerCoordinates[playerIndex].y + y));
         }
 
         /**
