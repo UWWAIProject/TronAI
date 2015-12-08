@@ -4,9 +4,13 @@
 tronament.aiModule("Chase AI", function() {
     var direction = 1;
     var enemyPos = "nothing";
+    this.index = -1;
+    this.players = [];
 
-    this.onReady = function() {
+    this.onReady = function(index, players) {
         //this.message("Hello");
+        this.index = index;
+        this.players = players;
     }
 
     this.onDeath = function() {
@@ -14,16 +18,22 @@ tronament.aiModule("Chase AI", function() {
     }
 
     this.find = function(){
-        if (enemyPos == "nothing")
-            this.scan();
-        else{
-            this.message(enemyPos);
+        console.log(enemyPos);
+        var result =[]
+        for(var i = 0; i<this.players.length;i++){
+            if (i === this.index){
+                continue;
+            }
+            result.push(tronament.getPlayerCoordinates(i));
         }
+        enemyPos = result;
+        console.log(enemyPos);
+        return result;
     }
 
     this.scan = function(){
-        for(var i=0; i<48; i++){
-            for(var j=0; j<48; j++){
+        for(var i=0; i<tronament.getBoardSize().width; i++){
+            for(var j=0; j<tronament.getBoardSize().height; j++){
                 //this.message("hello" + j);
                 if(this.queryAbsolute(i,j) == tronament.OPPONENT){
                     enemyPos = i + "," + j;

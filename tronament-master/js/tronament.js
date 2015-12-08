@@ -88,6 +88,19 @@ window.tronament = new function() {
     }
 
     /**
+     * Gets the dimensions of the board.
+     * @param i OPTIONAL the player to get coordinates of
+     * @return Object An object whose "width" property is the width of the board
+     *                and "height" property is the height of the board.
+     */
+    this.getPlayerCoordinates = function(i) {
+        if (i){
+            return playerCoordinates[i];
+        }
+        return playerCoordinates;
+    };
+
+    /**
      * Bootstraps an AI module prototype.
      *
      * Here there be dragons. This method uses some meta-programming
@@ -228,10 +241,14 @@ window.tronament = new function() {
 
             // let the a.i. know we are ready
             players[i] = instance;
-            if (typeof instance.onReady === "function") {
-                instance.onReady();
-            }
+
         }
+        players.forEach(function(player,index,array){
+            if (typeof instance.onReady === "function") {
+                player.onReady(index,array);
+            }
+
+        });
 
         alivePlayerCount = players.length;
         running = true;
@@ -298,8 +315,9 @@ window.tronament = new function() {
         // ask each player to respond with their move
         for (var i = 0; i < players.length; i++) {
             // ignore dead players :(
-            if (players[i].__dead)
+            if (players[i].__dead) {
                 continue;
+            }
 
             // tell the player to move
             try {
