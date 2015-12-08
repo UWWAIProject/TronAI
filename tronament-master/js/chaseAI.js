@@ -18,7 +18,6 @@ tronament.aiModule("Chase AI", function() {
             this.scan();
         else{
             this.message(enemyPos);
-            //if(this.queryAbsolute)
         }
     }
 
@@ -28,7 +27,7 @@ tronament.aiModule("Chase AI", function() {
                 //this.message("hello" + j);
                 if(this.queryAbsolute(i,j) == tronament.OPPONENT){
                     enemyPos = i + "," + j;
-                    //this.message(enemyPos);
+                    this.message(enemyPos);
                     break;
                 	break;
                 }
