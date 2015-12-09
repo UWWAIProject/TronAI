@@ -28,7 +28,6 @@ tronament.aiModule("Chase AI", function() {
         enemy_x = result[0].x;
         enemy_y = result[0].y;
         console.log(result[0].x + " , " + result[0].y);
-        //return result;
     }
 
     this.scan = function(){
@@ -42,7 +41,10 @@ tronament.aiModule("Chase AI", function() {
 
 
     this.chase = function(){
-        this.message(enemy_x)
+        favors_hor = "none";
+        favors_vert = "none";
+        //this.message(this.getCurrentPos()[0] + ", " + this.getCurrentPos()[1]);
+        this.getCurrentPos();
     }
 
     /**

@@ -144,6 +144,11 @@ window.tronament = new function() {
             var playerIndex = players.indexOf(this);
             return this.queryAbsolute(playerCoordinates[playerIndex].x + x, playerCoordinates[playerIndex].y + y);
         }
+		
+		//constructor.prototype.getCurrentPos = function(){
+		//	var positions = [playerCoordinates[playerIndex].x, playerCoordinates[playerIndex].y];
+		//	return positons
+		//}
 
         /**
          * Displays a fun message in the Tronament UI.
