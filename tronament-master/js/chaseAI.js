@@ -5,6 +5,8 @@ tronament.aiModule("Chase AI", function() {
     var direction = 1;
     this.index = -1;
     this.players = [];
+    my_x = 2;
+    my_y = 2;
     enemy_x = 2;
     enemey_y = 2;
 
@@ -25,6 +27,8 @@ tronament.aiModule("Chase AI", function() {
             }
             result.push(tronament.getPlayerCoordinates(i));
         }
+        my_x = tronament.getPlayerCoordinates(this.index).x;
+        my_y = tronament.getPlayerCoordinates(this.index).y;
         enemy_x = result[0].x;
         enemy_y = result[0].y;
         console.log(result[0].x + " , " + result[0].y);
@@ -41,10 +45,35 @@ tronament.aiModule("Chase AI", function() {
 
 
     this.chase = function(){
-        favors_hor = "none";
-        favors_vert = "none";
-        //this.message(this.getCurrentPos()[0] + ", " + this.getCurrentPos()[1]);
-        this.getCurrentPos();
+        /* favors is a string that's either up, down, left or right that, based on the vert/hori weight decide whether to hug the line
+        ** above, below, to the left of, or two the right of the opponent.  The weighting will measure distance between players and in what
+        ** direction, then favor will determine which distance is shorter, then favor that direction to hug the line.  from there we will make
+        ** a coordinate point. 
+        */
+
+        vert_weight = enemy_x - my_x;
+        hori_weight = enemy_y - my_y;
+
+        if(Math.abs(vert_weight) > Math.abs(hori_weight) && vert_weight > 0){
+            
+        }
+
+        if(Math.abs(vert_weight) > Math.abs(hori_weight) && vert_weight < 0){
+
+        }
+
+        if(Math.abs(vert_weight) < Math.abs(hori_weight) && hori_weight > 0){
+
+        }
+
+        if(Math.abs(vert_weight) < Math.abs(hori_weight) && hori_weight < 0){
+
+        }
+
+        //determining point based on favor
+
+        //I'll figure out the directions tomorrow
+        //@TODO have function to determine our current position
     }
 
     /**
