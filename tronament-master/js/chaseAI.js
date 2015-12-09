@@ -5,6 +5,8 @@ tronament.aiModule("Chase AI", function() {
     var direction = 1;
     this.index = -1;
     this.players = [];
+    enemy_x = 2;
+    enemey_y = 2;
 
     this.onReady = function(index, players) {
         this.index = index;
@@ -23,8 +25,10 @@ tronament.aiModule("Chase AI", function() {
             }
             result.push(tronament.getPlayerCoordinates(i));
         }
+        enemy_x = result[0].x;
+        enemy_y = result[0].y;
         console.log(result[0].x + " , " + result[0].y);
-        return result;
+        //return result;
     }
 
     this.scan = function(){
@@ -34,19 +38,20 @@ tronament.aiModule("Chase AI", function() {
                 }
             }
         }
-    }
+
 
 
     this.chase = function(){
-
+        this.message(enemy_x)
     }
 
     /**
      * Moves based on some randomness and some checks.
      */
     this.move = function() {
-        var move = Math.floor((Math.random() * 50) + 1);
         this.find();
+        var move = Math.floor((Math.random() * 50) + 1);
+        this.chase();
         if (move == tronament.EAST && this.directionIsSafe(move)) {
             direction = tronament.EAST;
         } else if (move == tronament.SOUTH && this.directionIsSafe(move)) {
