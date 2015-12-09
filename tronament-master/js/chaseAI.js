@@ -3,22 +3,19 @@
  */
 tronament.aiModule("Chase AI", function() {
     var direction = 1;
-    var enemyPos = "nothing";
     this.index = -1;
     this.players = [];
 
     this.onReady = function(index, players) {
-        //this.message("Hello");
         this.index = index;
         this.players = players;
     }
 
     this.onDeath = function() {
-        //this.message("Curse you, Lightyear!");
+
     }
 
     this.find = function(){
-        console.log(enemyPos);
         var result =[]
         for(var i = 0; i<this.players.length;i++){
             if (i === this.index){
@@ -26,27 +23,22 @@ tronament.aiModule("Chase AI", function() {
             }
             result.push(tronament.getPlayerCoordinates(i));
         }
-        enemyPos = result;
-        console.log(enemyPos);
+        console.log(result[0].x + " , " + result[0].y);
         return result;
     }
 
     this.scan = function(){
         for(var i=0; i<tronament.getBoardSize().width; i++){
             for(var j=0; j<tronament.getBoardSize().height; j++){
-                //this.message("hello" + j);
-                if(this.queryAbsolute(i,j) == tronament.OPPONENT){
-                    enemyPos = i + "," + j;
-                    this.message(enemyPos);
-                    break;
-                	break;
+                    //saving this one for bail
                 }
             }
         }
     }
 
-    this.dis = function(){
-        this.message(enemyPos);
+
+    this.chase = function(){
+
     }
 
     /**
