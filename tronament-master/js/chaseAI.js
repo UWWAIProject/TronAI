@@ -54,20 +54,24 @@ tronament.aiModule("Chase AI", function() {
         vert_weight = enemy_x - my_x;
         hori_weight = enemy_y - my_y;
 
-        if(Math.abs(vert_weight) > Math.abs(hori_weight) && vert_weight > 0){
-            
+        if(Math.abs(vert_weight) > Math.abs(hori_weight) && hori_weight > 0){
+                //favor left side
+                //this.goto(enemy_x-1, enemy_y);
         }
 
-        if(Math.abs(vert_weight) > Math.abs(hori_weight) && vert_weight < 0){
-
+        if(Math.abs(vert_weight) > Math.abs(hori_weight) && hori_weight < 0){
+                //favor right side
+                //this.goto(enemy_x+1, enemy_y);
         }
 
-        if(Math.abs(vert_weight) < Math.abs(hori_weight) && hori_weight > 0){
-
+        if(Math.abs(vert_weight) < Math.abs(hori_weight) && vert_weight > 0){
+                //favor above
+                //this.goto(enemy_x, enemy_y-1);
         }
 
-        if(Math.abs(vert_weight) < Math.abs(hori_weight) && hori_weight < 0){
-
+        if(Math.abs(vert_weight) < Math.abs(hori_weight) && vert_weight < 0){
+                //favor below
+                //this.goto(enemy_x, enemy_y+1);
         }
 
         //determining point based on favor
