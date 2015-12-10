@@ -4,6 +4,12 @@ window.tronament = new function() {
     this.SOUTH = 2;
     this.WEST = 3;
     this.EAST = 4;
+    this.DIRECTIONS = [
+        this.NORTH,
+        this.SOUTH,
+        this.WEST,
+        this.EAST
+    ]
 
     this.EMPTY = 0;
     this.TRAIL = 1;
@@ -88,6 +94,23 @@ window.tronament = new function() {
     }
 
     /**
+     * Gets the opposite direction
+     * @return direction
+     */
+    this.getOppositeDirection = function(direction){
+        switch (direction){
+            case tronament.NORTH:
+                return tronament.SOUTH;
+            case tronament.SOUTH:
+                return tronament.NORTH;
+            case tronament.WEST:
+                return tronament.EAST;
+            case tronament.EAST:
+                return tronament.WEST;
+        }
+
+    }
+    /**
      * Gets the dimensions of the board.
      * @param i OPTIONAL the player to get coordinates of
      * @return Object An object whose "width" property is the width of the board
@@ -158,6 +181,7 @@ window.tronament = new function() {
         constructor.prototype.message = function(message) {
             var playerIndex = players.indexOf(this);
             var messageBox = document.getElementById("player-" + (playerIndex + 1) + "-message");
+            console.log('Player' + playerIndex + ': ' + message);
             messageBox.value = message;
         }
 
