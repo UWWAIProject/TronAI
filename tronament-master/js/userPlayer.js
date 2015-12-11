@@ -7,6 +7,9 @@ tronament.aiModule("user", function() {
     this.move = function() {
         return direction;
     }
+        this.onReady = function() {
+        
+    }
 
     /**
      * Handles keyboard presses.

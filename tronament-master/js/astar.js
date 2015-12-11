@@ -33,7 +33,7 @@ var astar = {
     * @param {GridNode} end
     */
     search: function(graph, start, end) {
-        graph.cleanDirty();
+        graph.cleanDirty;
         openHeap = getHeap(),
         closestNode = start; // set the start node to be the closest if required
 		closest=false;
@@ -45,7 +45,7 @@ var astar = {
             var currentNode = openHeap.pop();
 
             // End case -- result has been found, return the traced path.
-            if(currentNode === end) {
+            if(currentNode.x === end.x && currentNode.y === end.y) {
                 return pathTo(currentNode);
             }
 
@@ -86,7 +86,7 @@ var astar = {
                 }
             }
         }
-        
+
         // No result was found - empty array signifies failure to find path.
         return [];
     },
@@ -111,7 +111,8 @@ var astar = {
 * A graph memory structure
 * @param {Array} gridIn 2D array of input weights
 */
-function Graph(gridIn) {
+
+var Graph = function(gridIn) {
     this.nodes = [];
     this.grid = [];
     for (var x = 0; x < gridIn.length; x++) {
@@ -124,7 +125,7 @@ function Graph(gridIn) {
         }
     }
     this.init();
-}
+};
 
 Graph.prototype.init = function() {
     this.dirtyNodes = [];
@@ -172,6 +173,7 @@ Graph.prototype.neighbors = function(node) {
 
     return ret;
 };
+
 
 function GridNode(x, y, weight) {
     this.x = x;

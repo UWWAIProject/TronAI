@@ -47,7 +47,7 @@ window.tronament = new function() {
     // the dimensions of the board grid
     var boardWidth, boardHeight;
     // a 2d array that stores a collision map for each position on the grid
-    var collisionMap = [[]];
+    this.collisionMap = [[]];
     var squareWidth, squareHeight;
     var timer;
     var running = false;
@@ -117,10 +117,7 @@ window.tronament = new function() {
      *                and "height" property is the height of the board.
      */
     this.getPlayerCoordinates = function(i) {
-        if (i){
-            return playerCoordinates[i];
-        }
-        return playerCoordinates;
+        return playerCoordinates[i];
     };
 
     /**
@@ -149,7 +146,7 @@ window.tronament = new function() {
             var result = tronament.query(x, y);
 
             // do an additional check for opponent trail
-            if (result == tronament.TRAIL && collisionMap[x][y] != playerIndex) {
+            if (result == tronament.TRAIL && this.collisionMap[x][y] != playerIndex) {
                 result = tronament.OPPONENT;
             }
 
@@ -233,7 +230,7 @@ window.tronament = new function() {
         if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
             return this.OUT_OF_BOUNDS;
         }
-        if (collisionMap[x] != undefined && collisionMap[x][y] != undefined) {
+        if (this.collisionMap[x] != undefined && this.collisionMap[x][y] != undefined) {
             return this.TRAIL;
         }
         return this.EMPTY;
@@ -244,7 +241,7 @@ window.tronament = new function() {
      */
     this.start = function() {
         players = [];
-        collisionMap = [[]];
+        this.collisionMap = [[]];
         playerCoordinates = [
             { x: Math.floor(boardWidth * 0.1), y: Math.floor(boardHeight * 0.1) },
             { x: Math.floor(boardWidth * 0.9), y: Math.floor(boardHeight * 0.9) },
@@ -383,10 +380,10 @@ window.tronament = new function() {
      * @param Number y The y-coordinate of the position.
      */
     var fill = function(playerIndex, x, y) {
-        if (collisionMap[x] == undefined) {
-            collisionMap[x] = [];
+        if (this.collisionMap[x] == undefined) {
+            this.collisionMap[x] = [];
         }
-        collisionMap[x][y] = playerIndex;
+        this.collisionMap[x][y] = playerIndex;
     }.bind(this);
 
     /**
@@ -421,11 +418,11 @@ window.tronament = new function() {
         // calculate the size of the trails
 
         // render all trails
-        for (var x = 0; x < collisionMap.length; x++) {
-            if (collisionMap[x] != undefined) {
-                for (var y = 0; y < collisionMap[x].length; y++) {
-                    if (collisionMap[x][y] != undefined) {
-                        var player = players[collisionMap[x][y]];
+        for (var x = 0; x < this.collisionMap.length; x++) {
+            if (this.collisionMap[x] != undefined) {
+                for (var y = 0; y < this.collisionMap[x].length; y++) {
+                    if (this.collisionMap[x][y] != undefined) {
+                        var player = players[this.collisionMap[x][y]];
                         ctx.fillStyle = player.color;
                         ctx.fillRect(x * squareWidth, y * squareHeight, squareWidth, squareHeight);
                     }
