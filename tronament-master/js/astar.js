@@ -36,7 +36,7 @@ var astar = {
         graph.cleanDirty;
         openHeap = getHeap(),
         closestNode = start; // set the start node to be the closest if required
-		closest=false;
+        closest=false;
         start.h = astar.manhattan(start, end);
         openHeap.push(start);
         while(openHeap.size() > 0) {
@@ -62,7 +62,7 @@ var astar = {
 
                     // The g score is the shortest distance from start to current node.
                     // We need to check if the path we have arrived at this neighbor is the shortest one we have seen yet.
-                    var gScore = currentNode.g + neighbor.getCost(currentNode),
+                    var gScore = (currentNode.g || 0) + neighbor.getCost(currentNode),
                         beenVisited = neighbor.visited;
 
                     if (!beenVisited || gScore < neighbor.g) {
