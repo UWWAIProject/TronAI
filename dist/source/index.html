@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TRONament</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="js/libs/tronament/assets/style.css">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="ui-layer">
+                <div class="padded" id="control-panel">
+                    <h1>TRONament</h1>
+                    <button id="load-module-button">Load Module</button>
+                    <button id="start-button">Start</button>
+                    <button onclick="tronament.ui.toggleOptions()">Options</button>
+
+                    <p>
+                        <label for="player-count-dropdown">Number of players:</label>
+                        <span class="select">
+                            <select id="player-count-dropdown">
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                                <option value="4">Four</option>
+                            </select>
+                        </span>
+                    </p>
+
+                    <div id="player-widgets"></div>
+                </div>
+                <canvas id="canvas" width="1024" height="768"></canvas>
+            </div>
+
+            <div class="ui-layer" id="options-menu" style="display:none;">
+                <div class="dialog">
+                    <h1>Options</h1>
+                    <div class="padded">
+                        <fieldset style="display: block; float: right;">
+                            <label for="fps-toggle">Board Size</label>
+                            <input type="text" id="option-board-width" value="48">
+                            <input type="text" id="option-board-height" value="48">
+                        </fieldset>
+
+                        <fieldset>
+                            <label for="fast-movement-checkbox">Fast-moving Players</label>
+                            <input type="checkbox" id="fast-movement-checkbox">
+                        </fieldset>
+
+                        <fieldset>
+                            <label for="fps-toggle">Show FPS</label>
+                            <input type="checkbox" id="fps-toggle">
+                        </fieldset>
+
+                        <button id="fullscreen-button">Toggle Full Screen</button>
+                    </div>
+
+                    <div class="padded bottom">
+                        <button class="focus" onclick="tronament.ui.hideOptions()">OK</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-layer" id="dialog-box" style="display:none;">
+                <div class="dialog">
+                    <h1 id="dialog-box-title"></h1>
+                    <div class="padded" id="dialog-box-message"></div>
+
+                    <div class="padded bottom">
+                        <button onclick="tronament.ui.hideDialog()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/libs/tronament/tronament.js"></script>
+        <script src="js/libs/tronament/tronament.ui.js"></script>
+        <script src="js/libs/tronament/simpleExampleAI.js"></script>
+        <script src="js/libs/tronament/userPlayer.js"></script>
+        <script src="js/chaseAI.js"></script>
+        <script src="js/bailAI.js"></script>
+        <script src="js/cuttoffAI.js"></script>
+        <script src="js/search.js"></script>
+        <script src="js/astar.js"></script>
+        <script>
+            tronament.init();
+        </script>
+    </body>
+</html>
