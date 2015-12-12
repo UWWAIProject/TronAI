@@ -183,6 +183,9 @@ window.tronament = new function() {
             messageBox.value = message;
         }
 
+        constructor.prototype.getDirection = function(){
+            return this.direction;
+        }
         that.aiModules[name] = constructor;
         lastLoadedModule = name;
     }
@@ -350,6 +353,7 @@ window.tronament = new function() {
             // tell the player to move
             try {
                 var move = players[i].move(that);
+                players[i].direction = move;
             } catch(e) {
                 console.log(e);
                 tronament.ui.showDialog("Error", "The A.I. \"" + players[i].name + "\" created the following exception: " + e.message);
