@@ -64,9 +64,10 @@ tronament.aiModule("Chase AI", function() {
         }
 
     that.chase = function(){
-        /* favors is a string that's either up, down, left or right that, based on the vert/hori weight decide whether to hug the line
-        ** above, below, to the left of, or two the right of the opponent.  The weighting will measure distance between players and in what
-        ** direction, then favor will determine which distance is shorter, then favor that direction to hug the line.  from there we will make
+        /* favors is a string that's either up, down, left or right that, based on the vert/hori weight decide
+        ** whether to hug the line above, below, to the left of, or two the right of the opponent.  The weighting
+        ** will measure distance between players and in what direction, then favor will determine which distance
+        ** is shorter, then favor that direction to hug the line.  from there we will make
         ** a coordinate point. 
         */
         var x = closestEnemyX,
