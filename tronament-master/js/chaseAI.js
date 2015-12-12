@@ -1,20 +1,16 @@
-/**
- * Example of randomly moving AI (it sucks, you probably shouldn't use it).
- */
-tronament.aiModule("Chase AI", function() {
-    var direction = 1;
-    this.index = -1;
-    this.players = [];
-    my_x = 2;
-    my_y = 2;
-    enemy_x = 2;
-    enemey_y = 2;
-    grid = [[]];
 
-    this.getDirection = function(){
-        return direction;
-    }
-    this.generateGrid = function(){
+tronament.aiModule("Chase AI", function() {
+    var that = this;
+    that.direction = 1;
+    that.index = -1;
+    that.players = [];
+    var my_x = 2;
+    var my_y = 2;
+    that.closestEnemy;
+    var closestEnemyX = 2;
+    var closestEnemyY = 2;
+    var grid = [[]];
+    that.generateGrid = function(){
         for (var i = 0; i<tronament.getBoardSize().width; i++){
             grid[i] = [];
             for (var j =0 ; j<tronament.getBoardSize().height;j++){
@@ -23,44 +19,43 @@ tronament.aiModule("Chase AI", function() {
         }
     }
 
-    this.updateGrid = function(){
-        if(tronament.collisionMap.length>0){
-             for (var i = 0; i<tronament.getBoardSize().width; i++){
-                if(tronament.collisionMap[i] !== undefined){
-                    for (var j =0 ; j<tronament.getBoardSize().height;j++){
-                        if(tronament.collisionMap[i][j] !== undefined && enemy_x !==i && enemy_y !==j){
-                                grid[i][j] = 0;
-
-                        }
-                    }
-                }
-            }
+    that.updateGrid = function(){
+         for (var xCol in tronament.collisionMap){
+             for(var yCol in tronament.collisionMap[xCol]){
+                 grid[xCol][yCol] = 0;
+             }
         }
 
     }
 
-    this.onReady = function(index, players) {
-        this.generateGrid();
-        this.index = index;
-        this.players = players;
+    that.onReady = function(index, players) {
+        that.generateGrid();
+        that.index = index;
+        that.players = players;
     }
 
-    this.find = function(){
-        var result =[]
-        for(var i = 0; i<this.players.length;i++){
-            if (i === this.index){
+    that.find = function(){
+        var result;
+        for(var i = 0; i<that.players.length;i++){
+            if (i === that.index){
                 continue;
             }
-            result.push(tronament.getPlayerCoordinates(i));
+            var enemyCoords = tronament.getPlayerCoordinates(i);
+            var enemyDist = astar.manhattan(enemyCoords, tronament.getPlayerCoordinates(that.index));
+            if (!result || enemyDist < result.dist){
+                result = {player: that.players[i], dist: enemyDist, coords: enemyCoords};
+            }
         }
-        my_x = tronament.getPlayerCoordinates(this.index).x;
-        my_y = tronament.getPlayerCoordinates(this.index).y;
-        enemy_x = result[0].x;
-        enemy_y = result[0].y;
-        console.log(result[0].x + " , " + result[0].y + " MY: " + my_x + " , " + my_y);
+        that.closestEnemy = result.player;
+        that.closestEnemyDist = result.dist;
+        my_x = tronament.getPlayerCoordinates(that.index).x;
+        my_y = tronament.getPlayerCoordinates(that.index).y;
+        closestEnemyX = result.coords.x;
+        closestEnemyY = result.coords.y;
+        console.log('Enemy: (' +closestEnemyX + ' , ' + closestEnemyY + ') MY: (' + my_x + ' , ' + my_y + ')');
     }
 
-    this.scan = function(){
+    that.scan = function(){
         for(var i=0; i<tronament.getBoardSize().width; i++){
             for(var j=0; j<tronament.getBoardSize().height; j++){
                     //saving this one for bail
@@ -68,113 +63,145 @@ tronament.aiModule("Chase AI", function() {
             }
         }
 
-    this.chase = function(){
+    that.chase = function(){
         /* favors is a string that's either up, down, left or right that, based on the vert/hori weight decide whether to hug the line
         ** above, below, to the left of, or two the right of the opponent.  The weighting will measure distance between players and in what
         ** direction, then favor will determine which distance is shorter, then favor that direction to hug the line.  from there we will make
         ** a coordinate point. 
         */
+        var x = closestEnemyX,
+            y = closestEnemyY,
+            dx = 0;
+            dy = 0;
+        var invalid = [];
+        switch (that.closestEnemy.getDirection()) {
+            case tronament.NORTH:
+                dy = -1;
+                break;
+            case tronament.SOUTH:
+                dy = 1;
+                break;
+            case tronament.WEST:
+                dx = -1;
+                break;
+            case tronament.EAST:
+                dx = 1;
+                break;
+        }
+        //This cool little function checks to make sure that this cell is open
+        //If it is not open it will flip the deltaX and deltaY untill it finds one.
+        var counter = 0;
+        var checkBounds = function checkBounds(dx1,dy1){
+            if (Math.abs(dx1) > 8 || Math.abs(dx1) > 8){
+                throw new Error("Cannot Find Route to Enemy");
+            }
+            function tryAnotherDirection(){
+                //Flip the delta values and multiply by -1. this way it will cycle through all of the
+                // possible cells around the enemy position
+                //Avoid an infinite loop, if there are no open spots
+                counter++;
+                if (counter < 5){
+                    return checkBounds(dy1 * -1, dx1 * -1);
+                }else{
+                    //Increment the delta values to widen the search;
+                    counter = 0;
+                    return checkBounds(dx1*2,dy1*2);
+                }
+            }
+            var destContent = that.queryAbsolute(closestEnemyX + dx1, closestEnemyY + dy1);
+            if (destContent !== tronament.EMPTY){
+                return tryAnotherDirection();
+            }else{
+                for(var i in invalid){
+                    if (dx == invalid[i].x && dy == invalid[i].y){
+                        return tryAnotherDirection(); //Return so that dx or dy aren't changed
+                    }
+                }
+                //Has not returned, so this set is not invalid
+                dx=dx1;
+                dy=dy1;
+            }
+        };
 
-        // vert_weight = enemy_x - my_x;
-        // hori_weight = enemy_y - my_y;
 
-        // if(Math.abs(vert_weight) > Math.abs(hori_weight) && hori_weight > 0){
-        //         //favor left side
-        //         return this.goto(enemy_x-1, enemy_y);
-        // }
-
-        // if(Math.abs(vert_weight) > Math.abs(hori_weight) && hori_weight < 0){
-        //         //favor right side
-        //         return this.goto(enemy_x+1, enemy_y);
-        // }
-
-        // if(Math.abs(vert_weight) < Math.abs(hori_weight) && vert_weight > 0){
-        //         //favor above
-        //         return this.goto(enemy_x, enemy_y-1);
-        // }
-
-        // if(Math.abs(vert_weight) < Math.abs(hori_weight) && vert_weight < 0){
-        //         //favor below
-        //         return this.goto(enemy_x, enemy_y+1);
-        // }
-
-        //return this.goto(enemy_x,enemy_y);
-        return this.goto(0,0);
-
-        //determining point based on favor
-
-        //I'll figure out the directions tomorrow
-        //@TODO have function to determine our current position
+        while(!result){
+            checkBounds(dx,dy);
+            //Add this set to the invalid array so that it is not tried again
+            invalid.push({x:dx,y:dy});
+            var result = that.goto(closestEnemyX+dx,closestEnemyY+dy);
+        }
+        return result;
     }
 
-    this.goto = function(x,y){
-        this.updateGrid();
+    that.goto = function(x,y){
+        that.updateGrid();
 
         var result = new GraphSearch(grid,new GridNode(my_x,my_y,grid[my_x][my_y]),new GridNode(x,y,grid[x][y]));
-        return result.nextMove()[0];
+        if (result || result.nextMove() || result.nextMove()[0]){
+            return result.nextMove()[0];
+        }else{
+            debugger;
+        }
+
 
     }
 
     /**
      * Moves based on some randomness and some checks.
      */
-    this.move = function() {
-        this.find();
-        move = this.chase();
+    that.move = function() {
+        that.find();
+        try{
+            move = that.chase();
+        }catch(e){
+            console.log("Cannot find route to enemy");
+            //Just find a safe direction to go now
+            return that.getSafeDirection();
+        }
+        if (!move){
+            debugger;
+            that.chase();
+        }
         if(move.x != my_x){
             if(move.x > my_x){
-                direction=tronament.EAST;
+                that.direction=tronament.EAST;
             }
             else{
-                 direction=tronament.WEST;
+                that.direction=tronament.WEST;
             }
         }
         if (move.y != my_y){
             if(move.y > my_y){
-                direction=tronament.SOUTH;
+                that.direction=tronament.SOUTH;
             }
             else{
-                 direction=tronament.NORTH;
+                that.direction=tronament.NORTH;
             }
         }
-        //this.chase();
-        // if (move == tronament.EAST && this.directionIsSafe(move)) {
-        //     direction = tronament.EAST;
-        // } else if (move == tronament.SOUTH && this.directionIsSafe(move)) {
-        //     direction = tronament.SOUTH;
-        // } else if (move == tronament.WEST && this.directionIsSafe(move)) {
-        //     direction = tronament.WEST;
-        // } else if (move == tronament.NORTH && this.directionIsSafe(move)) {
-        //     direction = tronament.NORTH;
-        // }
-
-        // if (!this.directionIsSafe(direction)) {
-        //     //this.message("Whoa! Not that way!");
-        //     if (this.directionIsSafe(tronament.EAST)) {
-        //         direction = tronament.EAST;
-        //     } if (this.directionIsSafe(tronament.SOUTH)) {
-        //         direction = tronament.SOUTH;
-        //     } if (this.directionIsSafe(tronament.WEST)) {
-        //         direction = tronament.WEST;
-        //     } if (this.directionIsSafe(tronament.NORTH)) {
-        //         direction = tronament.NORTH;
-        //     }
-        // }
-
-        return direction;
+        return that.direction;
     }
 
-    
+    that.getSafeDirection = function () {
+        if(that.directionIsSafe(that.direction)){
+            return that.direction;
+        }
+
+            for (var dir in tronament.DIRECTIONS){
+                if (that.directionIsSafe(tronament.DIRECTIONS[dir])){
+                    return tronament.DIRECTIONS[dir];
+                }
+            }
+    };
      // Makes sure a given direction is a safe move.
      
-    this.directionIsSafe = function(direction) {
-        if (direction == tronament.EAST && this.queryRelative(1, 0)) {
+    that.directionIsSafe = function(direction) {
+        if (direction == tronament.EAST && that.queryRelative(1, 0)) {
             return false;
-        } else if (direction == tronament.SOUTH && this.queryRelative(0, 1)) {
+        } else if (direction == tronament.SOUTH && that.queryRelative(0, 1)) {
             return false;
-        } else if (direction == tronament.WEST && this.queryRelative(-1, 0)) {
+        } else if (direction == tronament.WEST && that.queryRelative(-1, 0)) {
             return false;
-        } else if (direction == tronament.NORTH && this.queryRelative(0, -1)) {
+        } else if (direction == tronament.NORTH && that.queryRelative(0, -1)) {
             return false;
         }
         return true;
