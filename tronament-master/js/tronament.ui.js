@@ -221,7 +221,11 @@ window.tronament.ui = new function() {
         document.getElementById("fps-toggle").addEventListener("change", function(e) {
             tronament.debug.showFps = this.checked;
         }, false);
-
+        window.addEventListener('keypress', function(e){
+            if ( e.keyCode == 13 ) {
+                tronament.start();
+            }
+        });
         document.getElementById("start-button").addEventListener("click", function(e) {
             tronament.start();
         }, false);
