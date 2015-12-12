@@ -1,3 +1,9 @@
+/**
+ * This none-working example of a master AI would take a dynamic number of states and it would ask the
+ * states for moves, and to score their move on a confidence level of how good the state thinks that
+ * the move is. The master AI then would take all of these heuristics into consideration before making
+ * the final decision
+ */
 window.masterAI = new function(){
   var mdistance = astar.manhattan;
   var safety_Ai = safety(my_x, my_y);
@@ -5,9 +11,13 @@ window.masterAI = new function(){
   var activity = activity();
   var trapped = trapped();
 
-  if (trapped == true) {
-    //enter survival state
-  }
+
+  //Each state plugin should register itself with this array on the window
+  //This will allow states to be added and removed
+  //An API for communicating with the states and returning a standard value
+  // from the states to the master AI to allow it to be standardized
+  window.masterAIStates = [];
+  this.states = window.masterAIStates;
 
   /*
   ** The empty scores of each state type.  In the final product the ChaseAI would have multiple variations that either move
