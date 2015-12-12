@@ -2,6 +2,10 @@
  * Super smart AI.
  */
 tronament.aiModule("example-ai", function() {
+
+    this.getDirection = function(){
+        return direction;
+    }
     this.move = function() {
         if (this.queryRelative(0, -1) == tronament.EMPTY) {
             return tronament.NORTH;

@@ -4,6 +4,9 @@
 tronament.aiModule("user", function() {
     var direction = 1;
 
+    this.getDirection = function(){
+        return direction;
+    }
     this.move = function() {
         return direction;
     }

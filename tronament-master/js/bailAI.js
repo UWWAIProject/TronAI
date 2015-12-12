@@ -3,7 +3,9 @@
  */
 tronament.aiModule("bail-ai", function() {
     var direction = 1;
-
+    this.getDirection = function(){
+        return direction;
+    }
     this.onReady = function() {
         this.message("It's go-time!");
     }

@@ -11,6 +11,9 @@ tronament.aiModule("Chase AI", function() {
     enemey_y = 2;
     grid = [[]];
 
+    this.getDirection = function(){
+        return direction;
+    }
     this.generateGrid = function(){
         for (var i = 0; i<tronament.getBoardSize().width; i++){
             grid[i] = [];
@@ -95,7 +98,8 @@ tronament.aiModule("Chase AI", function() {
         //         return this.goto(enemy_x, enemy_y+1);
         // }
 
-        return this.goto(enemy_x,enemy_y);
+        //return this.goto(enemy_x,enemy_y);
+        return this.goto(0,0);
 
         //determining point based on favor
 
