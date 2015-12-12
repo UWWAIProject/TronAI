@@ -44,6 +44,37 @@ if(activity < 0){
 
 }
 
+var base = 0;
+var baseState = "";
+
+if(chaseCon > base){
+    base = chaseCon;
+    baseState="chaseCon";
+}
+
+if(chaseN > base){
+    base = chaseN;
+    baseState="chaseN";
+}
+
+if(chaseAgg > base){
+    base = chaseAgg;
+    baseState="chaseAgg";
+}
+
+if(bail > base){
+    base = bail;
+    baseState="bail";
+}
+
+if(attack > base){
+    base = attack;
+    baseState="attack";
+}
+
+
+
+
 
 
 function findOpponent(){
