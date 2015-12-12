@@ -9,6 +9,14 @@ window.masterAI = new function(){
     //enter survival state
   }
 
+  /*
+  ** The empty scores of each state type.  In the final product the ChaseAI would have multiple variations that either move
+  ** ahead, behind, or side by side the opponent.  A primitive version of the scoring system is also below.  It's just a simple
+  ** set of if statements that illustrates scenarios based on the condition results.  These scenarios then provide incremental scores for each
+  ** state type.
+  ** 
+  ** Markov would likely be initiated after this conditional scoring process.
+  */
   var chaseCon = 0;
   var chaseN = 0;
   var chaseAgg = 0;
@@ -42,6 +50,7 @@ window.masterAI = new function(){
   var base = 0;
   var baseState = "";
 
+  //determining which is the highest score
   if(chaseCon > base){
     base = chaseCon;
     baseState="chaseCon";
@@ -101,6 +110,13 @@ window.masterAI = new function(){
 
     //move logic
   }
+
+  /*
+  ** These are all functions to determine the various conditions MasterAI will use to perform decision making
+  ** In the final product, each of these function's return values will be stored in an object, the objects will
+  ** then be stored in an array that allows the Hidden Markov method to perform pattern analysis to add additional
+  ** weight to any state score of its choosing.
+  */
 
   function activity() {
     var distance = 0;
